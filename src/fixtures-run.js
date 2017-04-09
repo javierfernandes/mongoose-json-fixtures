@@ -9,7 +9,7 @@ import Mongoose from './setup'
  *   * the name must be the name of the model, ex: User.json (only one file per model)
  *   * the content should be an array of json objects.
  */
-export async function run(options) {
+export async function run(options, disconnectOnEnd = true) {
   const checkParam = name => { if (!options[name]) throw new Error(`No "${name}" parameter provided !`) }
 
   checkParam('mongoUrl')
@@ -37,9 +37,9 @@ export async function run(options) {
 
   console.log(`Loading [${files.length}] Fixtures ...`)
 
-  await sequencePromises(files.map(file => () => loadFixture(file) ))
+  await sequencePromises(files.map(file => () => loadFixture(options.folder, file) ))
 
   console.log('All fixtures loaded !')
 
-  await Mongoose.teardown()
+  return disconnectOnEnd ? Mongoose.teardown() : Promise.resolve()
 }

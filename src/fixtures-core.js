@@ -47,9 +47,9 @@ export const readFixturesForModel = async (folder, model) => {
   )
 }
 
-export const readFixture = (file) => require(`${fixturesFolder()}/${file}`)
+export const readFixture = (folder, file) => require(`${folder}/${file}`)
 
-export const loadFixture = (file) => loadFixtureForModel(readFixture(file), modelNameFromFile(file))
+export const loadFixture = (folder, file) => loadFixtureForModel(readFixture(folder, file), modelNameFromFile(file))
 
 export const saveFixture = (file, fixtures) => {
   const modelName = file.slice(0, -5)  // .json

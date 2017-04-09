@@ -15,7 +15,6 @@ describe.only('Fixtures', () => {
   })
 
   describe('required parameters', () => {
-
     async function expectRequiredParameter(options, errorMessage) {
       try { await run(options) ; throw new Error('parameters check should have failed !') }
       catch (err) { /* console.log(err.stack); */ expect(err.message).to.be.equal(errorMessage) }
@@ -45,5 +44,20 @@ describe.only('Fixtures', () => {
       modelsFile: `${__dirname}/sample-models.js`
     })
   })
+
+  it('should run a simple User fixture', async () => {
+    await run({ 
+      mongoUrl: 'mongodb://localhost/mongoose-json-fixtures-test',
+      folder: `${__dirname}/sample-fixtures`,
+      modelsFile: `${__dirname}/sample-models.js`
+    }, false)
+
+    const User = mongoose.model('User')
+    const nrOfUsers = await User.count({})
+    expect(nrOfUsers).to.be.equal(2)
+  })
+
+  it('should support running only a model specific fixtures')
+  it('should support multiple files for a model')
 
 })
