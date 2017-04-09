@@ -3,9 +3,6 @@ import mongoose from 'mongoose'
 
 mongoose.Promise = global.Promise
 
-// this is to trigger model loading
-// export * from '../models/all'
-
 class MongooseFeature {
   setup(url) {
     // mongoose.set('debug', true)
