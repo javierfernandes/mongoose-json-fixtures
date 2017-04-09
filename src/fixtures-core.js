@@ -37,10 +37,10 @@ const modelNameFromFile = (file) => {
     return fileName.slice(0, fileName.indexOf('-'))
   }
   return fileName
-}  // .json
+}
 
-export const readFixturesForModel = async (model) => {
-  const files = await listFixtures()
+export const readFixturesForModel = async (folder, model) => {
+  const files = await listFixtures(folder)
   return files.filter(fileName =>
     isFixtureFileForModel(fileName, model)
     && isJsonFile(fileName)

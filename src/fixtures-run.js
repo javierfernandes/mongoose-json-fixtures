@@ -18,7 +18,8 @@ export async function run(options) {
   checkParam('modelsFile')
 
   await Mongoose.setup(options.mongoUrl)
-  require('modelsFile')
+  console.log(`Setting up mongoose models ${options.modelsFile}`)
+  require(options.modelsFile)
 
   if (options.dropDB) {
     console.log('Dropping database !')
@@ -30,7 +31,7 @@ export async function run(options) {
     mongoose.model(options.model).remove({})
   }
 
-  const files = await (options.model ? readFixturesForModel(options.model) : listFixtures())
+  const files = await (options.model ? readFixturesForModel(options.model) : listFixtures(options.folder))
 
   console.log('USING FIXTURES', files.join(','))
 
@@ -40,5 +41,5 @@ export async function run(options) {
 
   console.log('All fixtures loaded !')
 
-  await mongooseFeature.teardown()
+  await Mongoose.teardown()
 }

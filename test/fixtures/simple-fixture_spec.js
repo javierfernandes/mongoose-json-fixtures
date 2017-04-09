@@ -17,8 +17,8 @@ describe.only('Fixtures', () => {
   describe('required parameters', () => {
 
     async function expectRequiredParameter(options, errorMessage) {
-      try { await run(options) }
-      catch (err) { expect(err.message).to.be.equal(errorMessage) }
+      try { await run(options) ; throw new Error('parameters check should have failed !') }
+      catch (err) { /* console.log(err.stack); */ expect(err.message).to.be.equal(errorMessage) }
     }
 
     it('should check required mongoUrl', async () => {
@@ -36,6 +36,14 @@ describe.only('Fixtures', () => {
       }, 'No "modelsFile" parameter provided !')
     })
 
+  })
+
+  it('should do nothing if there are no fixtures', async () => {
+    await run({ 
+      mongoUrl: 'mongodb://localhost/mongoose-json-fixtures-test',
+      folder: `${__dirname}/empty-fixtures`,
+      modelsFile: `${__dirname}/sample-models.js`
+    })
   })
 
 })
