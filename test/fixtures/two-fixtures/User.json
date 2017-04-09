@@ -1,0 +1,12 @@
+[
+  {
+    "_id" : "58484a783d008d59de5a5dc5",
+    "name": "jfernandes",
+    "password": "mongoose-fixtures678"
+  },
+  {
+    "_id" : "58484a783d008d59de5a5dc6",
+    "name": "azul",
+    "password": "mongoose-fixtures876"
+  }
+]

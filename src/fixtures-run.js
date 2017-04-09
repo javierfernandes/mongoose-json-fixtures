@@ -31,7 +31,7 @@ export async function run(options, disconnectOnEnd = true) {
     mongoose.model(options.model).remove({})
   }
 
-  const files = await (options.model ? readFixturesForModel(options.model) : listFixtures(options.folder))
+  const files = await (options.model ? readFixturesForModel(options.folder, options.model) : listFixtures(options.folder))
 
   console.log('USING FIXTURES', files.join(','))
 

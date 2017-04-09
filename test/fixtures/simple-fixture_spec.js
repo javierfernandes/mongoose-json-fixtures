@@ -12,6 +12,7 @@ describe.only('Fixtures', () => {
 
   afterEach(async() => {
     if (mongoose.connection && mongoose.connection.db) mockgoose.reset()
+    await (mongoose.connection._closeCalled ? Promise.resolve() : mongoose.connection.close())
   })
 
   describe('required parameters', () => {
@@ -48,7 +49,7 @@ describe.only('Fixtures', () => {
   it('should run a simple User fixture', async () => {
     await run({ 
       mongoUrl: 'mongodb://localhost/mongoose-json-fixtures-test',
-      folder: `${__dirname}/sample-fixtures`,
+      folder: `${__dirname}/one-fixture`,
       modelsFile: `${__dirname}/sample-models.js`
     }, false)
 
@@ -57,7 +58,23 @@ describe.only('Fixtures', () => {
     expect(nrOfUsers).to.be.equal(2)
   })
 
-  it('should support running only a model specific fixtures')
+  it('should support running only a model specific fixtures', async () => {
+    await run({ 
+      mongoUrl: 'mongodb://localhost/mongoose-json-fixtures-test',
+      folder: `${__dirname}/two-fixtures`,
+      modelsFile: `${__dirname}/sample-models.js`,
+      model: 'User'
+    }, false)
+
+    const User = mongoose.model('User')
+    const nrOfUsers = await User.count({})
+    expect(nrOfUsers).to.be.equal(2)
+
+    // no countries
+    const Country = mongoose.model('Country')
+    const countries = await Country.count({})
+    expect(countries).to.be.equal(0)
+  })
   it('should support multiple files for a model')
 
 })
